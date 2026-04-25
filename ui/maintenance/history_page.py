@@ -176,7 +176,7 @@ def history_page(page: ft.Page):
                                 controls=[
                                     ft.Icon(ft.Icons.BUILD_CIRCLE_OUTLINED, size=56, color=ON_SURFACE_MUTED),
                                     ft.Text("Sin mantenimientos registrados", size=15, color=ON_SURFACE_MUTED),
-                                    ft.Text("Agrega el primer mantenimiento con el botón +", size=12, color=ON_SURFACE_MUTED, text_align=ft.TextAlign.CENTER),
+                                    ft.Text("Registra el primer mantenimiento con el botón +", size=12, color=ON_SURFACE_MUTED, text_align=ft.TextAlign.CENTER),
                                 ],
                                 horizontal_alignment=ft.CrossAxisAlignment.CENTER,
                                 spacing=12,
