@@ -17,7 +17,12 @@ from app.database.base import Base
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_DATABASE_URL = f"sqlite:///{PROJECT_ROOT / 'mototrack.db'}"
 
-_database_url = os.getenv("MOTOTRACK_DB_URL", DEFAULT_DATABASE_URL)
+
+def _read_database_url() -> str:
+    return os.getenv("MOTOTRACK_DB_URL") or os.getenv("DATABASE_URL") or DEFAULT_DATABASE_URL
+
+
+_database_url = _read_database_url()
 _engine: Engine | None = None
 _SessionLocal: sessionmaker[Session] | None = None
 
@@ -78,7 +83,7 @@ def configure_database(database_url: str | None = None) -> str:
     if _engine is not None:
         _engine.dispose()
 
-    _database_url = database_url or os.getenv("MOTOTRACK_DB_URL", DEFAULT_DATABASE_URL)
+    _database_url = database_url or _read_database_url()
     _engine = _build_engine(_database_url)
     _SessionLocal = sessionmaker(bind=_engine, autoflush=False, autocommit=False, expire_on_commit=False)
     return _database_url

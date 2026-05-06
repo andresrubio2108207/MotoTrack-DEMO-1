@@ -1,0 +1,8 @@
+.python312/
+.tmp/
+.venv.mysql_*/
+.pytest_cache/
+pytest-cache-files-*/
+__pycache__/
+*.pyc
+python-*.zip
