@@ -1,98 +1,144 @@
 # MotoTrack-DEMO-1
-MotoTrack es una aplicación movil la cual permite gestionar el uso de motocicletas. Incluye registro de kilometraje, control de mantenimientos y un panel interactivo básico, mostrando cómo organizar y visualizar datos de forma práctica y sencilla.
 
-# FUNCIONALIDADES PRINCIPALES DE ESTE ENTREGABLE:
+MotoTrack es una aplicaciÃ³n movil la cual permite gestionar el uso de motocicletas. Incluye registro de kilometraje, control de mantenimientos y un panel interactivo bÃ¡sico, mostrando cÃ³mo organizar y visualizar datos de forma prÃ¡ctica y sencilla.
 
-1 Registro de usuario
-2 Gemeracion de alertas/Notificaciones 
-3 Sugerencias de cambio/Mantenimiento
+## FUNCIONALIDADES PRINCIPALES DE ESTE ENTREGABLE
 
-Estructura del proyecto mototrack/ ├── app/ # Núcleo de la aplicación │ ├── database/ # Configuración y conexión a la base de datos │ │ ├── base.py │ │ ├── engine.py │ │ └── seed.py │ │ │ ├── models/ # Definición de entidades (tablas) │ │ ├── alert.py │ │ ├── maintenance.py │ │ ├── motorcycle.py │ │ └── user.py │ │ │ ├── scheduler/ # Tareas automáticas en segundo plano │ │ └── jobs.py │ │ │ ├── services/ # Lógica de negocio │ │ ├── alert_service.py │ │ ├── auth_service.py │ │ └── maintenance_service.py │ │ │ └── state/ # Estado de la aplicación │ └── session_state.py │ ├── ui/ # Interfaz de usuario │ ├── alerts/ │ ├── auth/ │ ├── maintenance/ │ └── shared/ │ ├── tests/ # Pruebas automatizadas │ ├── test_alerts.py │ ├── test_auth.py │ └── test_maintenance.py │ ├── main.py # Punto de entrada ├── mototrack.db # Base de datos SQLite ├── requirements.txt #
+1. Registro de usuario
+2. Gemeracion de alertas/Notificaciones
+3. Sugerencias de cambio/Mantenimiento
 
+## Estructura del proyecto
 
-## app/ → Núcleo de la aplicación
+```text
+mototrack/
+├── app/                      # NÃºcleo de la aplicaciÃ³n
+│   ├── database/             # ConfiguraciÃ³n y conexiÃ³n a la base de datos
+│   │   ├── base.py
+│   │   ├── engine.py
+│   │   └── seed.py
+│   ├── models/               # DefiniciÃ³n de entidades (tablas)
+│   │   ├── alert.py
+│   │   ├── maintenance.py
+│   │   ├── motorcycle.py
+│   │   └── user.py
+│   ├── scheduler/            # Tareas automÃ¡ticas en segundo plano
+│   │   └── jobs.py
+│   ├── services/             # LÃ³gica de negocio
+│   │   ├── alert_service.py
+│   │   ├── auth_service.py
+│   │   └── maintenance_service.py
+│   └── state/                # Estado de la aplicaciÃ³n
+│       └── session_state.py
+├── ui/                       # Interfaz de usuario
+│   ├── alerts/
+│   ├── auth/
+│   ├── maintenance/
+│   └── shared/
+├── tests/                    # Pruebas automatizadas
+│   ├── test_alerts.py
+│   ├── test_auth.py
+│   └── test_maintenance.py
+├── main.py                   # Punto de entrada
+├── mototrack.db              # Base de datos SQLite
+├── requirements.txt          #
+```
+
+## app/ â†’ NÃºcleo de la aplicaciÃ³n
 
 ### database/
+
 Gestiona todo lo relacionado con la base de datos:
-- base.py → configuración base ORM
-- engine.py → conexión a la base de datos
-- seed.py → datos iniciales para pruebas
+
+- base.py â†’ configuraciÃ³n base ORM
+- engine.py â†’ conexiÃ³n a la base de datos
+- seed.py â†’ datos iniciales para pruebas
 
 ### models/
-Define la estructura de los datos:
-- user.py → usuarios
-- motorcycle.py → motocicletas
-- maintenance.py → mantenimientos
-- alert.py → alertas
 
-Aquí solo se define qué datos existen, no la lógica.
+Define la estructura de los datos:
+
+- user.py â†’ usuarios
+- motorcycle.py â†’ motocicletas
+- maintenance.py â†’ mantenimientos
+- alert.py â†’ alertas
+
+AquÃ­ solo se define quÃ© datos existen, no la lÃ³gica.
 
 ### services/
-Contiene la lógica del negocio:
-- auth_service.py → registro y autenticación
-- maintenance_service.py → gestión de mantenimientos
-- alert_service.py → generación de alertas
 
-Aquí se implementan las reglas, validaciones y procesos.
+Contiene la lÃ³gica del negocio:
+
+- auth_service.py â†’ registro y autenticaciÃ³n
+- maintenance_service.py â†’ gestiÃ³n de mantenimientos
+- alert_service.py â†’ generaciÃ³n de alertas
+
+AquÃ­ se implementan las reglas, validaciones y procesos.
 
 ### scheduler/
+
 Automatiza tareas en segundo plano:
-- jobs.py → ejecución de procesos periódicos
+
+- jobs.py â†’ ejecuciÃ³n de procesos periÃ³dicos
 
 Ejemplos:
+
 - Revisar mantenimientos vencidos
-- Generar alertas automáticamente
+- Generar alertas automÃ¡ticamente
 
 ### state/
-Maneja el estado de la aplicación en tiempo de ejecución:
-- session_state.py → usuario activo y datos temporales
+
+Maneja el estado de la aplicaciÃ³n en tiempo de ejecuciÃ³n:
+
+- session_state.py â†’ usuario activo y datos temporales
 
 ---
 
-## ui/ → Interfaz de usuario
+## ui/ â†’ Interfaz de usuario
 
 Organizada por funcionalidades:
-- auth/ → pantallas de login y registro
-- alerts/ → visualización de alertas
-- maintenance/ → gestión de mantenimientos
-- shared/ → componentes reutilizables
+
+- auth/ â†’ pantallas de login y registro
+- alerts/ â†’ visualizaciÃ³n de alertas
+- maintenance/ â†’ gestiÃ³n de mantenimientos
+- shared/ â†’ componentes reutilizables
 
 ---
 
-## tests/ → Pruebas
+## tests/ â†’ Pruebas
 
 - test_auth.py
 - test_alerts.py
 - test_maintenance.py
 
-Validan que la lógica funcione correctamente.
+Validan que la lÃ³gica funcione correctamente.
 
 ---
 
-# Archivos principales
+## Archivos principales
 
-- main.py → punto de entrada de la aplicación
-- mototrack.db → base de datos SQLite
-- requirements.txt → dependencias
-- README.md → documentación del proyecto
-- .env → variables de entorno
+- main.py â†’ punto de entrada de la aplicaciÃ³n
+- mototrack.db â†’ base de datos SQLite
+- requirements.txt â†’ dependencias
+- README.md â†’ documentaciÃ³n del proyecto
+- .env â†’ variables de entorno
 
 ---
 
-# Flujo de funcionamiento
+## Flujo de funcionamiento
 
-1. El usuario se registra o inicia sesión  
-2. Registra su motocicleta  
-3. Ingresa datos de uso (kilometraje)  
+1. El usuario se registra o inicia sesiÃ³n
+2. Registra su motocicleta
+3. Ingresa datos de uso (kilometraje)
 4. El sistema:
-   - Evalúa condiciones
+   - EvalÃºa condiciones
    - Genera sugerencias
-   - Programa alertas automáticamente  
-5. El usuario recibe notificaciones y gestiona mantenimientos  
+   - Programa alertas automÃ¡ticamente
+5. El usuario recibe notificaciones y gestiona mantenimientos
 
 ---
 
-# Tecnologías utilizadas
+## TecnologÃ­as utilizadas
 
 - Python
 - SQLite
@@ -100,23 +146,24 @@ Validan que la lógica funcione correctamente.
 
 ---
 
-# Escalabilidad del proyecto
+## Escalabilidad del proyecto
 
-MotoTrack está preparado para evolucionar hacia una arquitectura más robusta:
+MotoTrack estÃ¡ preparado para evolucionar hacia una arquitectura mÃ¡s robusta:
 
-- Migración de la interfaz a Flutter
-- Implementación de backend con Flask
-- Integración con bases de datos en la nube
+- MigraciÃ³n de la interfaz a Flutter
+- ImplementaciÃ³n de backend con Flask
+- IntegraciÃ³n con bases de datos en la nube
 - Sistema de notificaciones en tiempo real
-- API para integración con otras aplicaciones
+- API para integraciÃ³n con otras aplicaciones
 
 ---
 
-# Estado del proyecto
+## Estado del proyecto
 
-Versión DEMO funcional
+VersiÃ³n DEMO funcional
 
 Posibles mejoras:
+
 - Notificaciones en tiempo real
 - Dashboard avanzado
-- Integración con sensores o GPS
+- IntegraciÃ³n con sensores o GPS
