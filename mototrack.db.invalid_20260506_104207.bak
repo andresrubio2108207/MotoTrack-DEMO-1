@@ -1,0 +1,48 @@
+-- MotoTrack Database Schema
+
+CREATE TABLE USERS (
+    id INTEGER PRIMARY KEY,
+    name TEXT,
+    email TEXT,
+    password TEXT,
+    created_at DATETIME
+);
+
+CREATE TABLE MOTORCYCLES (
+    id INTEGER PRIMARY KEY,
+    user_id INTEGER,
+    brand TEXT,
+    model TEXT,
+    year INTEGER,
+    plate TEXT,
+    current_km REAL,
+    created_at DATETIME,
+    FOREIGN KEY (user_id) REFERENCES USERS(id)
+);
+
+CREATE TABLE MAINTENANCES (
+    id INTEGER PRIMARY KEY,
+    motorcycle_id INTEGER,
+    type TEXT,
+    description TEXT,
+    km_at_service REAL,
+    cost REAL,
+    service_date DATETIME,
+    next_service_km REAL,
+    next_service_date DATETIME,
+    created_at DATETIME,
+    FOREIGN KEY (motorcycle_id) REFERENCES MOTORCYCLES(id)
+);
+
+CREATE TABLE ALERTS (
+    id INTEGER PRIMARY KEY,
+    motorcycle_id INTEGER,
+    title TEXT,
+    trigger_type TEXT,
+    trigger_km REAL,
+    trigger_date DATETIME,
+    is_active BOOLEAN,
+    is_fired BOOLEAN,
+    created_at DATETIME,
+    FOREIGN KEY (motorcycle_id) REFERENCES MOTORCYCLES(id)
+);
