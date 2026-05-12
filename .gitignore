@@ -1,4 +1,5 @@
 .python312/
+.venv/
 .tmp/
 .venv.mysql_*/
 .pytest_cache/
@@ -6,3 +7,5 @@ pytest-cache-files-*/
 __pycache__/
 *.pyc
 python-*.zip
+mototrack.db
+mototrack.db.invalid_*.bak

@@ -1,169 +1,105 @@
-# MotoTrack-DEMO-1
+# MotoTrack Demo
 
-MotoTrack es una aplicación móvil la cual permite gestionar el uso de motocicletas. Incluye registro de kilometraje, control de mantenimientos y un panel interactivo básico, mostrando cómo organizar y visualizar datos de forma práctica y sencilla.
+MotoTrack es una aplicacion de escritorio construida con Flet para gestionar motocicletas, mantenimientos y alertas. El proyecto usa SQLite + SQLAlchemy y esta organizado por capas para separar datos, logica y UI.
 
-## FUNCIONALIDADES PRINCIPALES DE ESTE ENTREGABLE
+## Funcionalidades
 
-1. Registro de usuario
-2. Gemeracion de alertas/Notificaciones
-3. Sugerencias de cambio/Mantenimiento
+1. Registro e inicio de sesion de usuarios.
+2. Registro de motocicletas por usuario.
+3. Historial de mantenimientos.
+4. Alertas por kilometraje o fecha.
+5. Sugerencias visibles en el panel segun el estado actual de la moto.
 
-## Estructura del proyecto
+## Estructura real del proyecto
 
 ```text
-mototrack/
-├── app/                      # Núcleo de la aplicación
-│   ├── database/             # Configuración y conexión a la base de datos
-│   │   ├── base.py
-│   │   ├── engine.py
-│   │   └── seed.py
-│   ├── models/               # Definición de entidades (tablas)
-│   │   ├── alert.py
-│   │   ├── maintenance.py
-│   │   ├── motorcycle.py
-│   │   └── user.py
-│   ├── scheduler/            # Tareas automáticas en segundo plano
-│   │   └── jobs.py
-│   ├── services/             # Lógica de negocio
-│   │   ├── alert_service.py
-│   │   ├── auth_service.py
-│   │   └── maintenance_service.py
-│   └── state/                # Estado de la aplicación
-│       └── session_state.py
-├── ui/                       # Interfaz de usuario
-│   ├── alerts/
-│   ├── auth/
-│   ├── maintenance/
-│   └── shared/
-├── tests/                    # Pruebas automatizadas
-│   ├── test_alerts.py
-│   ├── test_auth.py
-│   └── test_maintenance.py
-├── main.py                   # Punto de entrada
-├── mototrack.db              # Base de datos SQLite
-├── requirements.txt
+PGC 3/
+|-- app/
+|   |-- database/
+|   |-- models/
+|   |-- scheduler/
+|   |-- services/
+|   `-- state/
+|-- tests/
+|-- ui/
+|   |-- alerts/
+|   |-- auth/
+|   |-- maintenance/
+|   `-- shared/
+|-- main.py
+|-- requirements.txt
+|-- pyrightconfig.json
+`-- README.md
 ```
 
-## app/ → Núcleo de la aplicación
+## Capas
 
-### database/
+### `app/database`
 
-Gestiona todo lo relacionado con la base de datos:
+- `base.py`: base ORM.
+- `engine.py`: conexion, sesiones e inicializacion.
+- `seed.py`: datos demo opcionales.
 
-- base.py → configuración base ORM
-- engine.py → conexión a la base de datos
-- seed.py → datos iniciales para pruebas
+### `app/models`
 
-### models/
+- `user.py`: usuarios.
+- `motorcycle.py`: motocicletas.
+- `maintenance.py`: mantenimientos.
+- `alert.py`: alertas.
 
-Define la estructura de los datos:
+### `app/services`
 
-- user.py → usuarios
-- motorcycle.py → motocicletas
-- maintenance.py → mantenimientos
-- alert.py → alertas
+- `auth_service.py`: registro, login y motocicletas del usuario.
+- `maintenance_service.py`: creacion y consulta de mantenimientos.
+- `alert_service.py`: creacion, consulta y evaluacion de alertas.
 
-Aquí solo se define qué datos existen, no la lógica.
+### `app/state`
 
-### services/
+- `session_state.py`: estado del usuario autenticado en la UI.
 
-Contiene la lógica del negocio:
+### `ui`
 
-- auth_service.py → registro y autenticación
-- maintenance_service.py → gestión de mantenimientos
-- alert_service.py → generación de alertas
+- `auth/`: login, registro y resumen visual del usuario.
+- `maintenance/`: detalle de moto, sugerencias, formulario e historial.
+- `alerts/`: formulario y listado de alertas.
+- `shared/`: tema, navbar y snackbar reutilizables.
 
-Aquí se implementan las reglas, validaciones y procesos.
+## Ejecucion
 
-### scheduler/
+### 1. Crear entorno e instalar dependencias
 
-Automatiza tareas en segundo plano:
+```powershell
+python -m venv .venv
+.\.venv\Scripts\activate
+pip install -r requirements.txt
+```
 
-- jobs.py → ejecución de procesos periódicos
+### 2. Iniciar la app
 
-Ejemplos:
+```powershell
+.\.venv\Scripts\python.exe main.py
+```
 
-- Revisar mantenimientos vencidos
-- Generar alertas automáticamente
+Si `AUTO_SEED_DATA=true` en `.env`, podras entrar con:
 
-### state/
+```text
+demo@mototrack.local / demo1234
+```
 
-Maneja el estado de la aplicación en tiempo de ejecución:
+## Pruebas
 
-- session_state.py → usuario activo y datos temporales
+```powershell
+.\.venv\Scripts\python.exe -m pytest -q
+```
 
----
+## Estado actual
 
-## ui/ → Interfaz de usuario
+- Backend funcional y probado.
+- UI modularizada por dominio.
+- Estructura duplicada antigua eliminada.
 
-Organizada por funcionalidades:
+## Mejoras futuras
 
-- auth/ → pantallas de login y registro
-- alerts/ → visualización de alertas
-- maintenance/ → gestión de mantenimientos
-- shared/ → componentes reutilizables
-
----
-
-## tests/ → Pruebas
-
-- test_auth.py
-- test_alerts.py
-- test_maintenance.py
-
-Validan que la lógica funcione correctamente.
-
----
-
-## Archivos principales
-
-- main.py → punto de entrada de la aplicación
-- mototrack.db → base de datos SQLite
-- requirements.txt → dependencias
-- README.md → documentación del proyecto
-- .env → variables de entorno
-
----
-
-## Flujo de funcionamiento
-
-1. El usuario se registra o inicia sesión
-2. Registra su motocicleta
-3. Ingresa datos de uso (kilometraje)
-4. El sistema:
-   - Evalúa condiciones
-   - Genera sugerencias
-   - Programa alertas automáticamente
-5. El usuario recibe notificaciones y gestiona mantenimientos
-
----
-
-## Tecnologías utilizadas
-
-- Python
-- SQLite
-- Arquitectura modular
-
----
-
-## Escalabilidad del proyecto
-
-MotoTrack está preparado para evolucionar hacia una arquitectura más robusta:
-
-- Migración de la interfaz a Flutter
-- Implementación de backend con Flask
-- Integración con bases de datos en la nube
-- Sistema de notificaciones en tiempo real
-- API para integración con otras aplicaciones
-
----
-
-## Estado del proyecto
-
-Versión DEMO funcional
-
-Posibles mejoras:
-
-- Notificaciones en tiempo real
-- Dashboard avanzado
-- Integración con sensores o GPS
+- Notificaciones reales en segundo plano.
+- API HTTP para integracion externa.
+- Edicion y eliminacion de alertas y mantenimientos desde la UI.

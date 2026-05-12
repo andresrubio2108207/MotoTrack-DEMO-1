@@ -97,6 +97,7 @@ def get_engine() -> Engine:
     global _engine
     if _engine is None:
         configure_database(_database_url)
+    assert _engine is not None, "Database engine not initialized"
     return _engine
 
 
@@ -104,6 +105,7 @@ def get_session() -> Session:
     global _SessionLocal
     if _SessionLocal is None:
         configure_database(_database_url)
+    assert _SessionLocal is not None, "Session factory not initialized"
     return _SessionLocal()
 
 

@@ -3,6 +3,7 @@
   "venv": ".venv",
   "include": [
     "app",
+    "ui",
     "tests",
     "main.py"
   ],
