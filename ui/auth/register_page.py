@@ -78,7 +78,7 @@ def build_register_card(
                 ft.Row(
                     [
                         ft.Text("Ya tienes cuenta?", size=13, color=MUTED_TEXT),
-                        ft.TextButton("Inicia sesion", on_click=on_go_login, style=ft.ButtonStyle(color=PRIMARY_COLOR)),
+                        ft.TextButton("Inicia sesión", on_click=on_go_login, style=ft.ButtonStyle(color=PRIMARY_COLOR)),
                     ],
                     alignment=ft.MainAxisAlignment.CENTER,
                     tight=True,

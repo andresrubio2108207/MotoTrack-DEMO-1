@@ -9,3 +9,4 @@ __pycache__/
 python-*.zip
 mototrack.db
 mototrack.db.invalid_*.bak
+.env

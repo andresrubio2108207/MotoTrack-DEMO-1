@@ -85,48 +85,58 @@ def build_auth_header() -> ft.Container:
     )
 
 
-def build_profile_summary(user_name: str | None, user_email: str | None, total_motos: int) -> ft.Container:
+def build_profile_summary(user_name: str | None, user_email: str | None, total_motos: int, *, compact: bool = False) -> ft.Container:
     initials = "".join(word[0].upper() for word in (user_name or "U").split()[:2])
+    identity = ft.Row(
+        [
+            ft.Container(
+                width=54,
+                height=54,
+                border_radius=18,
+                bgcolor=PRIMARY_LIGHT,
+                border=ft.border.all(1, BORDER_COLOR),
+                alignment=ft.alignment.Alignment.CENTER,
+                content=ft.Text(initials, size=19, weight=ft.FontWeight.BOLD, color=PRIMARY_COLOR),
+            ),
+            ft.Column(
+                [
+                    ft.Text(
+                        user_name or "Usuario activo",
+                        size=16,
+                        weight=ft.FontWeight.BOLD,
+                        color=TEXT_COLOR,
+                        max_lines=2,
+                    ),
+                    ft.Text(user_email or "Sin correo disponible", size=12, color=MUTED_TEXT, max_lines=2),
+                ],
+                spacing=3,
+                tight=True,
+                expand=True,
+            ),
+        ],
+        spacing=12,
+        vertical_alignment=ft.CrossAxisAlignment.CENTER,
+    )
+    header: ft.Control = (
+        ft.Column([identity, ft.Row([status_badge("Activo", color=SUCCESS_COLOR)], alignment=ft.MainAxisAlignment.END)], spacing=10)
+        if compact
+        else ft.Row(
+            [*identity.controls, status_badge("Activo", color=SUCCESS_COLOR)],
+            spacing=12,
+            vertical_alignment=ft.CrossAxisAlignment.CENTER,
+        )
+    )
 
     return ft.Container(
         margin=ft.margin.Margin.symmetric(horizontal=16),
         content=section_card(
             ft.Column(
                 [
-                    ft.Row(
-                        [
-                            ft.Container(
-                                width=54,
-                                height=54,
-                                border_radius=18,
-                                bgcolor=PRIMARY_LIGHT,
-                                border=ft.border.all(1, BORDER_COLOR),
-                                alignment=ft.alignment.Alignment.CENTER,
-                                content=ft.Text(initials, size=19, weight=ft.FontWeight.BOLD, color=PRIMARY_COLOR),
-                            ),
-                            ft.Column(
-                                [
-                                    ft.Text(
-                                        user_name or "Usuario activo",
-                                        size=16,
-                                        weight=ft.FontWeight.BOLD,
-                                        color=TEXT_COLOR,
-                                    ),
-                                    ft.Text(user_email or "Sin correo disponible", size=12, color=MUTED_TEXT),
-                                ],
-                                spacing=3,
-                                tight=True,
-                                expand=True,
-                            ),
-                            status_badge("Activo", color=SUCCESS_COLOR),
-                        ],
-                        spacing=12,
-                        vertical_alignment=ft.CrossAxisAlignment.CENTER,
-                    ),
+                    header,
                     ft.Row(
                         [
                             pill("Motos registradas", str(total_motos), tone=ACCENT_SOFT),
-                            pill("Estado", "Al dia", tone=PRIMARY_LIGHT),
+                            pill("Estado", "Al día", tone=PRIMARY_LIGHT),
                         ],
                         spacing=10,
                         wrap=True,

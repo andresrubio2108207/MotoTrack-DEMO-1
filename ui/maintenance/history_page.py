@@ -24,7 +24,7 @@ def _icon_for_title(title: str) -> str:
     return ft.icons.Icons.BUILD_OUTLINED
 
 
-def build_history_list(items: list[dict[str, str]]) -> ft.Column:
+def build_history_list(items: list[dict[str, str]], *, on_edit=None, on_delete=None) -> ft.Column:
     header = ft.Container(
         padding=ft.padding.Padding.only(left=16, right=16, top=4, bottom=0),
         content=section_title(
@@ -49,6 +49,25 @@ def build_history_list(items: list[dict[str, str]]) -> ft.Column:
     cards: list[ft.Control] = [header]
     for item in items:
         icon_name = _icon_for_title(item["title"])
+        actions: list[ft.Control] = []
+        if item.get("id") and on_edit:
+            actions.append(
+                ft.IconButton(
+                    icon=ft.icons.Icons.EDIT_ROUNDED,
+                    icon_color=ACCENT_COLOR,
+                    tooltip="Editar mantenimiento",
+                    on_click=lambda e, current=item: on_edit(e, current),
+                )
+            )
+        if item.get("id") and on_delete:
+            actions.append(
+                ft.IconButton(
+                    icon=ft.icons.Icons.DELETE_OUTLINE_ROUNDED,
+                    icon_color="#E24B4A",
+                    tooltip="Eliminar mantenimiento",
+                    on_click=lambda e, current=item: on_delete(e, current),
+                )
+            )
         cards.append(
             ft.Container(
                 margin=ft.margin.Margin.symmetric(horizontal=16),
@@ -77,6 +96,7 @@ def build_history_list(items: list[dict[str, str]]) -> ft.Column:
                             tight=True,
                             expand=True,
                         ),
+                        ft.Row(actions, spacing=0, tight=True) if actions else ft.Container(width=0),
                     ],
                     spacing=12,
                     vertical_alignment=ft.CrossAxisAlignment.START,

@@ -5,9 +5,11 @@ from app.database.engine import configure_database, dispose_engine, init_db
 from app.services.auth_service import (
     add_motorcycle,
     authenticate_user,
+    delete_motorcycle,
     get_user_by_email,
     list_user_motorcycles,
     register_user,
+    update_motorcycle,
 )
 
 TEST_DB_PATH = None
@@ -48,3 +50,15 @@ def test_add_motorcycle_to_user():
     assert motorcycle.plate == "ABC123"
     assert len(motorcycles) == 1
     assert motorcycles[0].brand == "Honda"
+
+
+def test_update_and_delete_motorcycle():
+    user = register_user("Andrea", "andrea@example.com", "secret123")
+    motorcycle = add_motorcycle(user.id, "Honda", "CB125F", 2025, "abc123", 980.5)
+
+    updated = update_motorcycle(motorcycle.id, brand="Yamaha", plate="xyz987", current_km=1200)
+
+    assert updated.brand == "Yamaha"
+    assert updated.plate == "XYZ987"
+    assert delete_motorcycle(motorcycle.id) is True
+    assert list_user_motorcycles(user.id) == []

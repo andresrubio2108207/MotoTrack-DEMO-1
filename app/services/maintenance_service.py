@@ -7,6 +7,21 @@ from app.database.engine import session_scope
 from app.models import Maintenance, Motorcycle
 
 
+def _sync_motorcycle_km_from_history(session, motorcycle_id: int) -> None:
+    motorcycle = session.get(Motorcycle, motorcycle_id)
+    if motorcycle is None:
+        return
+
+    max_history_km = (
+        session.query(Maintenance)
+        .filter(Maintenance.motorcycle_id == motorcycle_id)
+        .order_by(Maintenance.km_at_service.desc())
+        .first()
+    )
+    if max_history_km is not None:
+        motorcycle.current_km = max(float(motorcycle.current_km or 0), float(max_history_km.km_at_service or 0))
+
+
 def create_maintenance(
     motorcycle_id: int,
     type: str,
@@ -75,9 +90,7 @@ def update_maintenance(maintenance_id: int, **changes: Any) -> Maintenance:
             if field in changes:
                 setattr(maintenance, field, changes[field])
 
-        motorcycle = session.get(Motorcycle, maintenance.motorcycle_id)
-        if motorcycle is not None and maintenance.km_at_service > motorcycle.current_km:
-            motorcycle.current_km = maintenance.km_at_service
+        _sync_motorcycle_km_from_history(session, maintenance.motorcycle_id)
 
         session.flush()
         session.refresh(maintenance)
@@ -89,5 +102,8 @@ def delete_maintenance(maintenance_id: int) -> bool:
         maintenance = session.get(Maintenance, maintenance_id)
         if maintenance is None:
             return False
+        motorcycle_id = maintenance.motorcycle_id
         session.delete(maintenance)
+        session.flush()
+        _sync_motorcycle_km_from_history(session, motorcycle_id)
         return True

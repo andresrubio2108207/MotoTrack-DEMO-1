@@ -20,8 +20,8 @@ def build_login_page(
     on_login,
     on_go_register,
 ) -> tuple[ft.Column, ft.TextField, ft.TextField]:
-    email_field = mobile_field("Correo electronico", "demo@mototrack.local", keyboard=ft.KeyboardType.EMAIL)
-    password_field = mobile_field("Contrasena", "********", password=True)
+    email_field = mobile_field("Correo electrónico", "demo@mototrack.local", keyboard=ft.KeyboardType.EMAIL)
+    password_field = mobile_field("Contraseña", "********", password=True)
 
     hero = ft.Container(
         padding=ft.padding.Padding.only(left=24, right=24, top=52, bottom=32),
@@ -53,7 +53,7 @@ def build_login_page(
         content=section_card(
             ft.Column(
                 [
-                    ft.Text("Iniciar sesion", size=20, weight=ft.FontWeight.BOLD, color=TEXT_COLOR),
+                    ft.Text("Iniciar sesión", size=20, weight=ft.FontWeight.BOLD, color=TEXT_COLOR),
                     ft.Text("Accede a tus motos, mantenimientos y alertas.", size=12, color=MUTED_TEXT),
                     email_field,
                     password_field,

@@ -4,6 +4,7 @@ from datetime import datetime, timedelta, timezone
 
 from app.database.engine import init_db, session_scope
 from app.models import Alert, Maintenance, Motorcycle, User
+from app.services.auth_service import hash_password
 
 
 def seed_database(force_reset: bool = False) -> None:
@@ -17,7 +18,7 @@ def seed_database(force_reset: bool = False) -> None:
         user = User(
             name="Demo Rider",
             email="demo@mototrack.local",
-            password="demo1234",
+            password=hash_password("demo1234"),
         )
         session.add(user)
         session.flush()

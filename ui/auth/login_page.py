@@ -3,10 +3,9 @@ from __future__ import annotations
 import flet as ft
 
 from ui.shared.theme import (
-    ACCENT_COLOR,
+    accent_button,
     MUTED_TEXT,
     PRIMARY_COLOR,
-    PRIMARY_LIGHT,
     SURFACE_COLOR,
     TEXT_COLOR,
     primary_button,
@@ -26,45 +25,40 @@ def build_login_card(email_field: ft.TextField, password_field: ft.TextField, on
         ),
         content=ft.Column(
             [
-                ft.Container(
-                    width=54,
-                    height=54,
-                    border_radius=18,
-                    bgcolor=translucent(SURFACE_COLOR, "24"),
-                    alignment=ft.alignment.Alignment.CENTER,
-                    content=ft.Icon(ft.icons.Icons.TWO_WHEELER_ROUNDED, color=SURFACE_COLOR, size=30),
+                ft.Row(
+                    [
+                        ft.Container(
+                            width=58,
+                            height=58,
+                            border_radius=20,
+                            bgcolor=translucent(SURFACE_COLOR, "22"),
+                            alignment=ft.alignment.Alignment.CENTER,
+                            content=ft.Icon(ft.icons.Icons.TWO_WHEELER_ROUNDED, color=SURFACE_COLOR, size=31),
+                        ),
+                        ft.Column(
+                            [
+                                ft.Text("MotoTrack", size=30, weight=ft.FontWeight.BOLD, color=SURFACE_COLOR),
+                                ft.Text("Cuidado preventivo para tu moto.", size=12, color="#D8EEF3"),
+                            ],
+                            spacing=2,
+                            tight=True,
+                            expand=True,
+                        ),
+                    ],
+                    spacing=12,
+                    vertical_alignment=ft.CrossAxisAlignment.CENTER,
                 ),
-                ft.Text("MotoTrack", size=30, weight=ft.FontWeight.BOLD, color=SURFACE_COLOR),
-                ft.Text(
-                    "Mantenimiento, alertas y vida util de tu moto en un solo lugar.",
-                    size=13,
-                    color="#D8EEF3",
-                ),
-            ],
-            spacing=10,
-            tight=True,
-        ),
-    )
-
-    form = section_card(
-        ft.Column(
-            [
-                ft.Text("Iniciar sesion", size=20, weight=ft.FontWeight.BOLD, color=TEXT_COLOR),
-                ft.Text("Accede al panel de seguimiento preventivo.", size=12, color=MUTED_TEXT),
-                email_field,
-                password_field,
-                primary_button("Entrar al panel", on_click=on_login),
                 ft.Container(
-                    bgcolor=PRIMARY_LIGHT,
+                    bgcolor=translucent(SURFACE_COLOR, "14"),
                     border_radius=16,
-                    padding=ft.padding.Padding.symmetric(horizontal=14, vertical=11),
+                    padding=ft.padding.Padding.symmetric(horizontal=12, vertical=10),
                     content=ft.Row(
                         [
-                            ft.Icon(ft.icons.Icons.INFO_OUTLINE_ROUNDED, color=PRIMARY_COLOR, size=16),
+                            ft.Icon(ft.icons.Icons.VERIFIED_ROUNDED, color=SURFACE_COLOR, size=17),
                             ft.Text(
-                                "Demo: demo@mototrack.local / demo1234",
-                                size=11,
-                                color=PRIMARY_COLOR,
+                                "Historial, kilometraje y alertas inteligentes en un panel.",
+                                size=12,
+                                color=SURFACE_COLOR,
                                 expand=True,
                             ),
                         ],
@@ -72,18 +66,21 @@ def build_login_card(email_field: ft.TextField, password_field: ft.TextField, on
                         vertical_alignment=ft.CrossAxisAlignment.CENTER,
                     ),
                 ),
-                ft.Row(
-                    [
-                        ft.Text("No tienes cuenta?", size=13, color=MUTED_TEXT),
-                        ft.TextButton(
-                            "Registrate",
-                            on_click=on_go_register,
-                            style=ft.ButtonStyle(color=ACCENT_COLOR),
-                        ),
-                    ],
-                    alignment=ft.MainAxisAlignment.CENTER,
-                    tight=True,
-                ),
+            ],
+            spacing=14,
+            tight=True,
+        ),
+    )
+
+    form = section_card(
+        ft.Column(
+            [
+                ft.Text("Iniciar sesión", size=20, weight=ft.FontWeight.BOLD, color=TEXT_COLOR),
+                ft.Text("Accede al panel de seguimiento preventivo.", size=12, color=MUTED_TEXT),
+                email_field,
+                password_field,
+                primary_button("Entrar al panel", on_click=on_login),
+                accent_button("Crear cuenta", on_click=on_go_register),
             ],
             spacing=12,
         ),

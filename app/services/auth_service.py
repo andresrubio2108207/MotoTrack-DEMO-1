@@ -3,6 +3,7 @@ from __future__ import annotations
 from typing import Any
 
 from passlib.context import CryptContext
+from passlib.exc import UnknownHashError
 
 from app.database.engine import session_scope
 from app.models import Motorcycle, User
@@ -16,7 +17,10 @@ def hash_password(password: str) -> str:
 
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
-    return pwd_context.verify(plain_password, hashed_password)
+    try:
+        return pwd_context.verify(plain_password, hashed_password)
+    except UnknownHashError:
+        return plain_password == hashed_password
 
 
 def get_user_by_id(user_id: int) -> User | None:
@@ -61,6 +65,10 @@ def authenticate_user(email: str, password: str) -> User | None:
         user = session.query(User).filter(User.email == normalized_email).first()
         if user is None or not verify_password(password, user.password):
             return None
+        if user.password == password:
+            user.password = hash_password(password)
+            session.flush()
+            session.refresh(user)
         return user
 
 
@@ -139,6 +147,10 @@ def update_motorcycle(motorcycle_id: int, **changes: Any) -> Motorcycle:
         session.flush()
         session.refresh(motorcycle)
         return motorcycle
+
+
+def update_motorcycle_km(motorcycle_id: int, current_km: int | float) -> Motorcycle:
+    return update_motorcycle(motorcycle_id, current_km=float(current_km))
 
 
 def delete_motorcycle(motorcycle_id: int) -> bool:

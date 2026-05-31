@@ -22,3 +22,4 @@ class Alert(Base):
     created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))  # type: ignore
 
     motorcycle = relationship("Motorcycle", back_populates="alerts")
+"""  """

@@ -12,6 +12,8 @@ from ui.shared.theme import (
     SURFACE_COLOR,
     TEXT_COLOR,
     WARNING_COLOR,
+    accent_button,
+    outline_button,
     pill,
     section_title,
     translucent,
@@ -61,6 +63,35 @@ def build_motorcycle_hero(
                 ft.Row([pill(label, value, tone="#FFFFFF") for label, value in stats], wrap=True, spacing=8, run_spacing=8),
             ],
             spacing=16,
+        ),
+    )
+
+
+def build_km_update_card(km_field: ft.TextField, on_update_km, on_release_alerts=None) -> ft.Container:
+    km_field.text_align = ft.TextAlign.CENTER
+    km_field.text_size = 28
+    km_field.keyboard_type = ft.KeyboardType.NUMBER
+    km_field.suffix_text = "km"
+
+    return ft.Container(
+        margin=ft.margin.Margin.symmetric(horizontal=16),
+        padding=18,
+        bgcolor=SURFACE_COLOR,
+        border_radius=20,
+        border=ft.border.all(1, BORDER_COLOR),
+        shadow=ft.BoxShadow(spread_radius=0, blur_radius=10, color=translucent(TEXT_COLOR, "0D"), offset=ft.Offset(0, 5)),
+        content=ft.Column(
+            [
+                section_title(
+                    "Kilometraje actual",
+                    "Actualiza el odómetro para recalcular alertas.",
+                    ft.icons.Icons.TWO_WHEELER_ROUNDED,
+                ),
+                km_field,
+                accent_button("Actualizar kilometraje", on_click=on_update_km),
+                outline_button("Tomar este km como punto de partida", on_click=on_release_alerts),
+            ],
+            spacing=12,
         ),
     )
 
@@ -125,7 +156,7 @@ def build_suggestions_panel(items: list[str]) -> ft.Column:
         padding=ft.padding.Padding.only(left=16, right=16, top=4, bottom=0),
         content=section_title(
             "Sugerencias",
-            "Proximas acciones recomendadas.",
+            "Próximas acciones recomendadas.",
             ft.icons.Icons.TIPS_AND_UPDATES_ROUNDED,
         ),
     )

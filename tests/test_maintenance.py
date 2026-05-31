@@ -4,7 +4,8 @@ from datetime import datetime, timezone
 
 from app.database.engine import configure_database, dispose_engine, init_db
 from app.services.auth_service import add_motorcycle, register_user
-from app.services.maintenance_service import create_maintenance, list_maintenances
+from app.services.export_service import export_maintenance_history_csv
+from app.services.maintenance_service import create_maintenance, delete_maintenance, list_maintenances, update_maintenance
 
 TEST_DB_PATH = None
 
@@ -43,3 +44,24 @@ def test_create_maintenance_updates_motorcycle_km():
     assert maintenance.id is not None
     assert len(history) == 1
     assert history[0].km_at_service == 9500
+
+
+def test_update_delete_and_export_maintenance_history():
+    user = register_user("Andrea", "andrea@example.com", "secret123")
+    motorcycle = add_motorcycle(user.id, "Suzuki", "GN125", 2023, "suz321", 9000)
+    maintenance = create_maintenance(
+        motorcycle_id=motorcycle.id,
+        type="Cambio de aceite",
+        km_at_service=9500,
+        service_date=datetime.now(timezone.utc),
+        cost=85000,
+    )
+
+    updated = update_maintenance(maintenance.id, type="Filtro de aire", km_at_service=9600)
+    history = list_maintenances(motorcycle.id)
+    output_path = export_maintenance_history_csv(motorcycle, history, output_dir=os.path.dirname(TEST_DB_PATH))
+
+    assert updated.type == "Filtro de aire"
+    assert "Filtro de aire" in output_path.read_text(encoding="utf-8")
+    assert delete_maintenance(maintenance.id) is True
+    assert list_maintenances(motorcycle.id) == []

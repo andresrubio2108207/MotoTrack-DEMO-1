@@ -4,13 +4,13 @@ MotoTrack es una aplicacion de escritorio construida con Flet para gestionar mot
 
 ## Funcionalidades
 
-1. Registro e inicio de sesion de usuarios.
+1. Registro e inicio de sesión de usuarios.
 2. Registro de motocicletas por usuario.
 3. Historial de mantenimientos.
 4. Alertas por kilometraje o fecha.
 5. Sugerencias visibles en el panel segun el estado actual de la moto.
 
-## Estructura real del proyecto
+## Estructura del proyecto
 
 ```text
 PGC 3/
@@ -37,7 +37,7 @@ PGC 3/
 ### `app/database`
 
 - `base.py`: base ORM.
-- `engine.py`: conexion, sesiones e inicializacion.
+- `engine.py`: conexión, sesiones e inicialización.
 - `seed.py`: datos demo opcionales.
 
 ### `app/models`
@@ -90,6 +90,23 @@ demo@mototrack.local / demo1234
 
 ```powershell
 .\.venv\Scripts\python.exe -m pytest -q
+```
+
+## Despliegue
+
+El entrypoint es `main.py`. En servidores web define estas variables:
+
+```text
+FLET_WEB=true
+PORT=8550
+AUTO_SEED_DATA=false
+MOTOTRACK_DB_URL=sqlite:///mototrack.db
+```
+
+En plataformas tipo Render/Heroku puedes usar el `Procfile` incluido:
+
+```text
+web: python main.py
 ```
 
 ## Estado actual
